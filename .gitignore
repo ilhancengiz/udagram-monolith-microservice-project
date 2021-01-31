@@ -2,3 +2,4 @@ set_env.sh
 .env
 .vscode/
 env-config/
+.DS_Store
