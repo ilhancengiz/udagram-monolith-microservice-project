@@ -27,4 +27,4 @@ deploy:
     - docker image push "$DOCKER_USERNAME"/udagram-frontend
     - docker image push "$DOCKER_USERNAME"/udagram-user-api
   on:
-    branch: master
+    branch: main
