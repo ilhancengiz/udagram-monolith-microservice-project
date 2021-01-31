@@ -15,6 +15,7 @@ spec:
         service: udagram-frontend
         api: external
     spec:
+      restartPolicy: Always
       containers:
         - image: ilhancengiz/udagram-frontend
           name: udagram-frontend
@@ -34,4 +35,3 @@ spec:
               port: 8080
             initialDelaySeconds: 3
             periodSeconds: 3
-      restartPolicy: Always
