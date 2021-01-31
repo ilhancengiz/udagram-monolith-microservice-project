@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: udagram-reverse-proxy
+  labels:
+    service: udagram-reverse-proxy
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        service: udagram-reverse-proxy
+    spec:
+      containers:
+        - image: ilhancengiz/udagram-reverse-proxy
+          name: udagram-reverse-proxy
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
