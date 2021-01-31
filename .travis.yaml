@@ -1,0 +1,30 @@
+language: minimal
+services:
+  - docker
+env:
+  - DOCKER_COMPOSE_VERSION=1.4.2
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+install:
+  - docker-compose -f build/docker-compose-build.yaml build --parallel
+
+after_script:
+  - docker images
+
+before_deploy:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+deploy:
+  provider: script
+  scripts:
+    - docker image push "$DOCKER_USERNAME"/udagram-reverse-proxy
+    - docker image push "$DOCKER_USERNAME"/udagram-feed-api
+    - docker image push "$DOCKER_USERNAME"/udagram-frontend
+    - docker image push "$DOCKER_USERNAME"/udagram-user-api
+  on:
+    branch: master
