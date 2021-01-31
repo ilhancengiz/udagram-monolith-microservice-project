@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: udagram-user-api
@@ -6,9 +6,6 @@ metadata:
     app: udagram-user-api
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: udagram-user-api
   template:
     metadata:
       labels:
