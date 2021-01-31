@@ -1,5 +1,3 @@
 set_env.sh
 .env
-aws-secret.yaml
-env-secret.yaml
 .vscode/
