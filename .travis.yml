@@ -22,6 +22,6 @@ before_deploy:
 deploy:
   provider: script
   script:
-    - docker image push "$DOCKER_USERNAME"/udagram-reverse-proxy && docker image push "$DOCKER_USERNAME"/udagram-user-api && docker image push "$DOCKER_USERNAME"/udagram-feed-api && docker image push "$DOCKER_USERNAME"/udagram-frontend
+    - docker-compose -f build/docker-compose-build.yaml push
   on:
     branch: main
