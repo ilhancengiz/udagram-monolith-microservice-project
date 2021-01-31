@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: udagram-frontend
   labels:
-    service: udagram-frontend
+    app: udagram-frontend
 spec:
   replicas: 1
   selector:
@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        service: udagram-frontend
+        app: udagram-frontend
         api: external
     spec:
       restartPolicy: Always

@@ -15,6 +15,10 @@ spec:
         app: udagram-feed-api
     spec:
       restartPolicy: Always
+      volumes:
+        - name: aws-secret
+          secret:
+            secretName: aws-secret
       containers:
         - name: udagram-feed-api
           image: ilhancengiz/udagram-feed-api
@@ -26,10 +30,6 @@ spec:
               port: 8080
             initialDelaySeconds: 3
             periodSeconds: 3
-          volumes:
-            - name: aws-secret
-              secret:
-                secretName: aws-secret
           volumeMounts:
             - name: aws-secret
               mountPath: "/root/.aws/"
