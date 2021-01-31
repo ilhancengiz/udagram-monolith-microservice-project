@@ -1,3 +1,6 @@
 set_env.sh
 .env
 .vscode/
+aws-secret.yaml
+env-configmap.yaml
+env-secret.yaml
