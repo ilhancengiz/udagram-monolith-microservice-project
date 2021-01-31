@@ -14,6 +14,7 @@ spec:
       labels:
         app: udagram-user-api
     spec:
+      restartPolicy: Always
       containers:
         - name: udagram-user-api
           image: ilhancengiz/udagram-user-api
@@ -25,3 +26,41 @@ spec:
               port: 8080
             initialDelaySeconds: 3
             periodSeconds: 3
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "500m"
+          env:
+            - name: URL
+              valueFrom:
+                configMapKeyRef:
+                  name: env-config
+                  key: URL
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: JWT_SECRET
+            - name: POSTGRESS_DB
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: POSTGRESS_DB
+            - name: POSTGRESS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: POSTGRESS_HOST
+            - name: POSTGRESS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: POSTGRESS_PASSWORD
+            - name: POSTGRESS_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: POSTGRESS_USERNAME

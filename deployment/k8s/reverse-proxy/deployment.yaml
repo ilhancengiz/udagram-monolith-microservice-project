@@ -11,6 +11,7 @@ spec:
       labels:
         service: udagram-reverse-proxy
     spec:
+      restartPolicy: Always
       containers:
         - image: ilhancengiz/udagram-reverse-proxy
           name: udagram-reverse-proxy
@@ -24,4 +25,3 @@ spec:
               cpu: "500m"
           ports:
             - containerPort: 8080
-      restartPolicy: Always

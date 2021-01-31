@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-config
+data:
+  URL: http://localhost:8100
+# you will replace URL with the URL of the frontend once you deploy it to AWS.
