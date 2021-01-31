@@ -22,9 +22,6 @@ before_deploy:
 deploy:
   provider: script
   script:
-    - docker image push "$DOCKER_USERNAME"/udagram-reverse-proxy
-    - docker image push "$DOCKER_USERNAME"/udagram-feed-api
-    - docker image push "$DOCKER_USERNAME"/udagram-frontend
-    - docker image push "$DOCKER_USERNAME"/udagram-user-api
+    - docker image push "$DOCKER_USERNAME"/udagram-reverse-proxy && docker image push "$DOCKER_USERNAME"/udagram-user-api && docker image push "$DOCKER_USERNAME"/udagram-feed-api && docker image push "$DOCKER_USERNAME"/udagram-frontend
   on:
     branch: main
