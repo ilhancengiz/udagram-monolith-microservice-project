@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: udagram-feed-api
@@ -6,6 +6,9 @@ metadata:
     app: udagram-feed-api
 spec:
   replicas: 2
+  selector:
+    matchLabels:
+      app: udagram-feed-api
   template:
     metadata:
       labels:
@@ -19,18 +22,6 @@ spec:
       containers:
         - name: udagram-feed-api
           image: ilhancengiz/udagram-feed-api
-          ports:
-            - containerPort: 8080
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 3
-            periodSeconds: 3
-          volumeMounts:
-            - name: aws-secret
-              mountPath: "/root/.aws/"
-              readOnly: true
           resources:
             requests:
               memory: "64Mi"
@@ -38,6 +29,18 @@ spec:
             limits:
               memory: "1024Mi"
               cpu: "500m"
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          volumeMounts:
+            - name: aws-secret
+              mountPath: "/root/.aws/"
+              readOnly: true
           env:
             - name: URL
               valueFrom:
@@ -64,23 +67,23 @@ spec:
                 secretKeyRef:
                   name: env-secret
                   key: JWT_SECRET
-            - name: POSTGRESS_DB
+            - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
                   name: env-secret
-                  key: POSTGRESS_DB
-            - name: POSTGRESS_HOST
+                  key: POSTGRES_DB
+            - name: POSTGRES_HOST
               valueFrom:
                 secretKeyRef:
                   name: env-secret
-                  key: POSTGRESS_HOST
-            - name: POSTGRESS_PASSWORD
+                  key: POSTGRES_HOST
+            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: env-secret
-                  key: POSTGRESS_PASSWORD
-            - name: POSTGRESS_USERNAME
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: env-secret
-                  key: POSTGRESS_USERNAME
+                  key: POSTGRES_USERNAME
