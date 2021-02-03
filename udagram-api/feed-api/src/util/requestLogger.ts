@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { NextFunction } from "connect";
-import chalk from "chalk";
 
 export function requestLogger(req: Request, res: Response, next: NextFunction) {
   //middleware function
@@ -11,11 +10,9 @@ export function requestLogger(req: Request, res: Response, next: NextFunction) {
   let status = res.statusCode;
   const start = process.hrtime();
   const durationInMilliseconds = getActualRequestDurationInMilliseconds(start);
-  let log = `[${chalk.blue(
-    formatted_date
-  )}] ${method}:${url} ${status} ${chalk.red(
+  let log = `[${formatted_date}] ${method}:${url} ${status} ${
     durationInMilliseconds.toLocaleString() + "ms"
-  )}`;
+  }`;
   console.log(log);
   next();
 }
