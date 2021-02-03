@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: udagram-user-api
@@ -6,6 +6,9 @@ metadata:
     app: udagram-user-api
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: udagram-user-api
   template:
     metadata:
       labels:
@@ -15,14 +18,6 @@ spec:
       containers:
         - name: udagram-user-api
           image: ilhancengiz/udagram-user-api
-          ports:
-            - containerPort: 8080
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 3
-            periodSeconds: 3
           resources:
             requests:
               memory: "64Mi"
@@ -30,6 +25,14 @@ spec:
             limits:
               memory: "1024Mi"
               cpu: "500m"
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
           env:
             - name: URL
               valueFrom:
@@ -41,23 +44,23 @@ spec:
                 secretKeyRef:
                   name: env-secret
                   key: JWT_SECRET
-            - name: POSTGRESS_DB
+            - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
                   name: env-secret
-                  key: POSTGRESS_DB
-            - name: POSTGRESS_HOST
+                  key: POSTGRES_DB
+            - name: POSTGRES_HOST
               valueFrom:
                 secretKeyRef:
                   name: env-secret
-                  key: POSTGRESS_HOST
-            - name: POSTGRESS_PASSWORD
+                  key: POSTGRES_HOST
+            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: env-secret
-                  key: POSTGRESS_PASSWORD
-            - name: POSTGRESS_USERNAME
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: env-secret
-                  key: POSTGRESS_USERNAME
+                  key: POSTGRES_USERNAME
