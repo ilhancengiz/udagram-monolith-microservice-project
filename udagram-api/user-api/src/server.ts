@@ -1,14 +1,14 @@
 import cors from "cors";
 import express from "express";
 import { sequelize } from "./sequelize";
-const { v4: uuidv4 } = require("uuid");
 
 import { IndexRouter } from "./controllers/v0/index.router";
+import { HealthRouter } from "./controllers/health/health.router";
 
 import bodyParser from "body-parser";
 import { config } from "./config/config";
 import { V0_USER_MODELS } from "./controllers/v0/model.index";
-import { requestLogger } from "./util/requestLogger";
+import morgan from "morgan";
 
 (async () => {
   await sequelize.addModels(V0_USER_MODELS);
@@ -18,8 +18,7 @@ import { requestLogger } from "./util/requestLogger";
   const port = process.env.PORT || 8080;
 
   app.use(bodyParser.json());
-
-  app.use(requestLogger);
+  app.use(morgan("combined"));
 
   app.use(
     cors({
@@ -43,29 +42,7 @@ import { requestLogger } from "./util/requestLogger";
     res.send("/api/v0/");
   });
 
-  app.get("/health", async (req, res) => {
-    let pid = uuidv4();
-    console.log(
-      new Date().toLocaleString() + `: ${pid} - Checking database connection...`
-    );
-    try {
-      await sequelize.authenticate();
-      console.log(
-        new Date().toLocaleString() +
-          `: ${pid} - Database Connection has been established successfully`
-      );
-      return res.status(200).send({
-        message:
-          new Date().toLocaleString() +
-          `: ${pid} - Connection has been established successfully.`,
-      });
-    } catch (error) {
-      console.error("Unable to connect to the database:", error);
-      return res
-        .status(400)
-        .send({ message: `Unable to connect to the database: ${error}` });
-    }
-  });
+  app.use("/health", HealthRouter);
 
   // Start the Server
   app.listen(port, () => {
